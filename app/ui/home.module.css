@@ -1,0 +1,14 @@
+.fontNum{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 15px;
+
+}
+
+.parFont{
+    font-size: 28px;
+    font-weight: 400;
+}
+.fontLight{
+    font-weight: 300;
+}

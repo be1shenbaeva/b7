@@ -26,7 +26,14 @@ const config: Config = {
         },
       },
     },
+    backgroundColor:{
+      'f5':'#f5f5f5',
+      'blueColor':'#4676ee'
+      
+    }
   },
+
+  
   plugins: [require('@tailwindcss/forms')],
 };
 export default config;
