@@ -11,7 +11,7 @@ export default function Navbar() {
       className={`${montserrat.className} loaded-155 container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light sm:p-9`}
     >
       {/* Логотип */}
-      <div className="mb-4 w-full bg-f5 sm:mb-0 sm:w-1/4">
+      <div className="mb-4 w-full  sm:mb-0 sm:w-1/4">
         <Link href={'/dashboard/home'}>
           <Image src="/logojayjay.png" alt="" width={124} height={50} />
         </Link>

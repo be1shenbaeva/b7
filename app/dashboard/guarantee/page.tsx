@@ -8,7 +8,7 @@ export default function Page() {
     <article
       className={`${montserrat.className} bg-blue-500 container mx-auto ml-20 mt-10 bg-f5 p-8 font-light`}
     >
-      <section className="ml-12">
+      <section className=" ml-12  ">
         <h1 className={styles.parFont}>Гарантия и сервис</h1>
         <p>
           <strong>Гарантийное обслуживание и ремонт</strong>

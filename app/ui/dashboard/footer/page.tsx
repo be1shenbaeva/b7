@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { montserrat } from '../../fonts';
 export default function Footer() {
   return (
     <>
-      <header className="container mx-auto flex h-[200px] items-center justify-around">
-        <div className="">
+      <header
+        className={`${montserrat.className} text-customGrey container mx-auto flex h-[200px] items-center justify-around font-light`}
+      >
+        <div>
           <ul>
             <li>
               <Image
@@ -15,7 +18,7 @@ export default function Footer() {
               ></Image>
             </li>
           </ul>
-          <ul className="flex justify-between ">
+          <ul className="ml-3 mt-5 flex w-[80px] justify-between ">
             <li>
               <Image src={'/insta.png'} width={22} height={22} alt=""></Image>
             </li>
@@ -35,7 +38,7 @@ export default function Footer() {
 
         <div>
           <ul>
-            <li>КОНТАКТЫ</li>
+            <li className="mb-4 font-normal">КОНТАКТЫ</li>
             <li>+996555732757</li>
             <li>
               <Link href="mailto:shop-b7@mail.ru">shop-b7@mail.ru</Link>
@@ -44,14 +47,14 @@ export default function Footer() {
         </div>
         <div>
           <ul className="gap-4">
-            <li>АДРЕС</li>
+            <li className="mb-4 font-normal">АДРЕС</li>
             <li> Бишкек, ул. Горького 1г, ТЦ </li>
             <li>Ташрабат, 3 этаж, отдел С10</li>
           </ul>
         </div>
         <div>
           <ul className="flex flex-col items-center">
-            <li>ВРЕМЯ РАБОТЫ</li>
+            <li className="mb-4 font-normal">ВРЕМЯ РАБОТЫ</li>
             <li>Ежедневно с 10.00 до 20.00</li>
           </ul>
         </div>
