@@ -1,4 +1,5 @@
-import type { Config } from 'tailwindcss';
+import { Config } from 'tailwindcss';
+const plugin = require('tailwindcss/plugin');
 
 const config: Config = {
   content: [
@@ -8,6 +9,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      userSelect: ['hover', 'focus'],
       gridTemplateColumns: {
         '13': 'repeat(13, minmax(0, 1fr))',
       },
@@ -17,6 +19,11 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        customGrey: '#838383',
+      },
+      backgroundColor: {
+        f5: '#f5f5f5',
+        blueColor: '#4676ee',
       },
     },
     keyframes: {
@@ -26,16 +33,19 @@ const config: Config = {
         },
       },
     },
-    backgroundColor: {
-      f5: '#f5f5f5',
-      blueColor: '#4676ee',
-    },
-    colors: {
-      customGrey: '#838383',
-      white: '#ffffff',
-    },
   },
 
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    plugin(function ({ addUtilities }: { addUtilities: Function }) {
+      const newUtilities = {
+        '.user-select-none': {
+          'user-select': 'none',
+        },
+      };
+      addUtilities(newUtilities);
+    }),
+  ],
 };
+
 export default config;

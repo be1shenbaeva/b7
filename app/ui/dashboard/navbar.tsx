@@ -8,26 +8,26 @@ import { montserrat } from '@/app/ui/fonts';
 export default function Navbar() {
   return (
     <header
-      className={`${montserrat.className} loaded-155 container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light sm:p-9`}
+      className={`${montserrat.className} loaded-155 user-select-none container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light sm:p-9`}
     >
       {/* Логотип */}
-      <div className="mb-4 w-full  sm:mb-0 sm:w-1/4">
+      <div className="mb-4 sm:mb-0">
         <Link href={'/dashboard/home'}>
           <Image src="/logojayjay.png" alt="" width={124} height={50} />
         </Link>
       </div>
 
       {/* Навигационное меню */}
-      <nav className="mb-4 w-full sm:mb-0 sm:w-1/2">
+      <nav className="  mb-4 w-1/4 sm:mb-0 sm:w-1/3 ">
         <ul className="flex flex-wrap sm:justify-between">
           <li className="mb-2 sm:mb-0 sm:mr-4">
-            <Link href={'/dashboard/guarantee'}>Гарантия</Link>
+            <Link href={'/guarantee'}>Гарантия</Link>
           </li>
           <li className="mb-2 sm:mb-0 sm:mr-4">
-            <Link href={'/dashboard/delivery'}>Доставка и оплата</Link>
+            <Link href={'/delivery'}>Доставка и оплата</Link>
           </li>
           <li className="mb-2 sm:mb-0">
-            <Link href={'/dashboard/location'}>Магазин</Link>
+            <Link href={'/location'}>Магазин</Link>
           </li>
         </ul>
       </nav>
@@ -40,10 +40,18 @@ export default function Navbar() {
       {/* Контактный номер */}
       <aside className="number mt-4 sm:mt-0">
         <ul>
-          <li className={styles.fontNum}>+996 555 73 27 57</li>
+          <Link href={'tel:+996705161165'}>
+            {' '}
+            <li className={styles.fontNum}>+996 555 73 27 57</li>
+          </Link>
           <li className="text-sm">связаться по телефону</li>
         </ul>
       </aside>
+      <div>
+        <button className="ml-10 h-10 w-[100px] rounded-md bg-blueColor px-4 text-white">
+          Войти
+        </button>
+      </div>
     </header>
   );
 }

@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <>
       <header
-        className={`${montserrat.className} text-customGrey container mx-auto flex h-[200px] items-center justify-around font-light`}
+        className={`${montserrat.className} user-select-none text-customGrey container mx-auto flex h-[200px] items-center justify-around font-light`}
       >
         <div>
           <ul>

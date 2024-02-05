@@ -6,14 +6,14 @@ export default function Page() {
   return (
     <>
       <article
-        className={`${montserrat.className} container mx-auto ml-20 mt-10 bg-f5 p-8 font-light`}
+        className={`${montserrat.className} user-select-none container mx-auto ml-20 mt-10 bg-f5 p-8 font-light`}
       >
-        <section className="ml-12">
+        <section className="ml-12 flex h-[1000px] flex-col justify-between">
           <h1 className={styles.parFont}>Доставка и оплата</h1>
           <p>
             <strong>Доставка по г. Бишкек</strong>
           </p>
-          <ul>
+          <ul className="list-disc">
             <li>Время доставки с 10:00 до 20:00</li>
             <li>Стоимость доставки по г. Бишкек — бесплатно</li>
             <li>
@@ -40,12 +40,11 @@ export default function Page() {
           </p>
           <p>
             Сотрудники службы доставки доставят ваш заказ по указанному вами
-            адресу.
+            адресу. <br /> При получении товара (в присутствии сотрудника службы
+            доставки):
           </p>
-          <p>
-            При получении товара (в присутствии сотрудника службы доставки):
-          </p>
-          <ul>
+
+          <ul className="list-disc">
             <li>
               Обязательно убедитесь в том, что нет видимых дефектов и товар
               укомплектован согласно перечня, указанного в руководстве по
