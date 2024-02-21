@@ -25,6 +25,9 @@ const config: Config = {
         f5: '#f5f5f5',
         blueColor: '#4676ee',
       },
+      fontSize: {
+        customSize: '16px',
+      },
     },
     keyframes: {
       shimmer: {

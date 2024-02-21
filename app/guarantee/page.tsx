@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Page() {
   return (
     <article
-      className={`${montserrat.className} user-select-none bg-blue-500 container ml-20 mt-10  flex-col justify-between bg-f5 p-8 font-light`}
+      className={`${montserrat.className} container ml-20 mt-10 flex-col justify-between  bg-blue-500 bg-f5 p-8 font-light user-select-none`}
     >
       <section className="ml-12 flex h-[1000px] flex-col justify-between">
         <h1 className={styles.parFont}>Гарантия и сервис</h1>

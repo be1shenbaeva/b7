@@ -8,11 +8,11 @@ import { montserrat } from '@/app/ui/fonts';
 export default function Navbar() {
   return (
     <header
-      className={`${montserrat.className} loaded-155 user-select-none container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light sm:p-9`}
+      className={`${montserrat.className} loaded-155 container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light user-select-none sm:p-9`}
     >
       {/* Логотип */}
       <div className="mb-4 sm:mb-0">
-        <Link href={'/dashboard/home'}>
+        <Link href={'/home'}>
           <Image src="/logojayjay.png" alt="" width={124} height={50} />
         </Link>
       </div>
@@ -48,9 +48,11 @@ export default function Navbar() {
         </ul>
       </aside>
       <div>
-        <button className="ml-10 h-10 w-[100px] rounded-md bg-blueColor px-4 text-white">
-          Войти
-        </button>
+        <Link href={'/register'}>
+          <button className="ml-10 h-10 w-[100px] rounded-md bg-blueColor px-4 text-white">
+            Войти
+          </button>
+        </Link>
       </div>
     </header>
   );

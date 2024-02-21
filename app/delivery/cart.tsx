@@ -5,7 +5,6 @@ import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 export default function Cart() {
   const [phone, setPhone] = useState('');
-  console.log(phone);
 
   return (
     <div className="mx-auto flex flex-col">
@@ -14,7 +13,12 @@ export default function Cart() {
       <span>Телефон</span>
 
       <PhoneInput
-        className="w-[300px]"
+        className="border-none"
+        style={{
+          border: '1px solid gray',
+          borderRadius: '5px',
+          width: '400px',
+        }}
         // style={{ width: '500px' }}
         defaultCountry="kg"
         value={phone}

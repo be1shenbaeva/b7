@@ -1,14 +1,16 @@
-.fontNum{
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 15px;
-
+.fontNum {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 15px;
 }
 
-.parFont{
-    font-size: 28px;
-    font-weight: 400;
+.parFont {
+  font-size: 28px;
+  font-weight: 400;
 }
-.fontLight{
-    font-weight: 300;
+.fontLight {
+  font-weight: 300;
+}
+.react-international-phone-input {
+  border: none;
 }
