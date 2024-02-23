@@ -2,11 +2,14 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCategories } from '../actions/categoryActions';
+
 export interface Category {
   id: number;
   name: string;
-  image: string;
+  image: [];
   parent: number | null;
+  title: string;
+  price: number;
 }
 
 interface InitialState {

@@ -1,238 +1,30 @@
 'use client';
 
-import ProductList from '@/app/productLiist/page';
 import { getCategories } from '@/redux/actions/categoryActions';
 import { getSubCategories } from '@/redux/actions/subcategoryActions';
 import { Category } from '@/redux/slices/categorySlices';
+import { AppDispatch } from '@/redux/store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-// import { getCategories } from '@/redux/actions/categoryActions';
-
-// import { useDispatch, useSelector } from 'react-redux';
-
-// import { useEffect, useState } from 'react';
-
-// import { Category } from '@/redux/slices/categorySlices';
-// import { usePathname } from 'next/navigation';
-// import ProductList from '@/app/productLiist/page';
-// import Image from 'next/image';
-// import { getSubCategories } from '@/redux/actions/subcategoryActions';
-
-// const SubcategoryPage = () => {
-//   const dispatch = useDispatch();
-//   const categories = useSelector(
-//     (state: { subCategory: { categories: Category[] } }) =>
-//       state.category.categories,
-//   );
-//   const path = usePathname();
-//   const id = path.split('/')[2];
-
-//   // Состояние для хранения подкатегорий
-//   const [subcategories, setSubcategories] = useState<Category[]>([]);
-
-//   useEffect(() => {
-//     dispatch(getCategories());
-//   }, [dispatch]);
-
-//   useEffect(() => {
-//     // Фильтрация подкатегорий по родительскому id
-//     const filteredSubcategories = categories.filter(
-//       (category) => category.parent === parseInt(id),
-//     );
-//     setSubcategories(filteredSubcategories);
-//   }, [categories, id]);
-
-//   // Получение продуктов из хранилища
-//   const products = useSelector((state: any) => state.products.products);
-
-//   console.log(products, 'products');
-//   const idSubProd = 0;
-//   return (
-//     <div>
-//       <div className="flex justify-around">
-//         {subcategories.map((subcategory) => (
-//           <div key={subcategory.id}>
-//             <h3>{subcategory.name}</h3>
-//             <Image
-//               src={`${subcategory.image}`}
-//               width={200}
-//               height={200}
-//               alt="subcat"
-//             ></Image>
-//             <ul>
-//               {/* Фильтрация продуктов по подкатегории */}
-
-//               {products
-//                 .filter((product) => product.category === subcategory.id)
-//                 .map((product) => (
-//                   <li key={product.id}>
-//                     <h4>{product.title}</h4>
-//                     <p>Price: {product.price}</p>
-//                     <p>Stock: {product.stock}</p>
-//                     {/* <Image
-//                       src={`http://13.51.165.176${product.images[0].image}`}
-//                       width={200}
-//                       height={200}
-//                       alt={product.title}
-//                     /> */}
-//                   </li>
-//                 ))}
-//             </ul>
-//           </div>
-//         ))}
-//       </div>
-//       <ProductList />
-//     </div>
-//   );
-// };
-
-// export default SubcategoryPage;
-
-//! это рабочий
-// const SubcategoryPage = () => {
-//   //!
-
-//   //   const dispatch = useDispatch();
-//   //   const categories = useSelector(
-//   //     (state: { subCategory: { categories: Category[] } }) =>
-//   //       state.category.categories,
-//   //   );
-//   //   const path = usePathname();
-//   //   const id = path.split('/')[2];
-
-//   //   // Состояние для хранения подкатегорий
-//   //   const [subcategories, setSubcategories] = useState<Category[]>([]);
-
-//   //   useEffect(() => {
-//   //     dispatch(getCategories());
-//   //   }, [dispatch]);
-
-//   //   useEffect(() => {
-//   //     // Фильтрация подкатегорий по родительскому id
-//   //     const filteredSubcategories = categories.filter(
-//   //       (category) => category.parent === parseInt(id),
-//   //     );
-//   //     setSubcategories(filteredSubcategories);
-//   //   }, [categories, id]);
-//   //!
-//   const dispatch = useDispatch();
-//   const categories = useSelector(
-//     (state: { subCategory: { subCategories } }) =>
-//       state.subCategory.subCategories,
-//   );
-//   console.log(categories, 'sub');
-
-//   const allCategories = useSelector((state) => {
-//     state;
-//   });
-//   console.log(allCategories, 'allCategories');
-
-//   const path = usePathname();
-//   const id = path.split('/')[2];
-
-//   useEffect(() => {
-//     dispatch(getSubCategories(id));
-//   }, [dispatch, id]);
-
-//   return (
-//     <div>
-//       <div className="flex justify-around">
-//         {categories.map((subcategory) => (
-//           <div key={subcategory.id}>
-//             <h3>{subcategory.title}</h3>
-//             <h3>{subcategory.price}</h3>
-
-//             {/* <Image
-//               src={`${subcategory.image}`}
-//               width={200}
-//               height={200}
-//               alt="subcat"
-//             /> */}
-//             {/* <ul>
-//               {products
-//                 .filter((product) => product.category === subcategory.id)
-//                 .map((product) => (
-//                   <li key={product.id}>
-//                     <h4>{product.title}</h4>
-//                     <p>Price: {product.price}</p>
-//                     <p>Stock: {product.stock}</p>
-//                   </li>
-//                 ))}
-//             </ul> */}
-//           </div>
-//         ))}
-//       </div>
-//       {/* <ProductList /> */}
-//     </div>
-//   );
-// };
-
-// export default SubcategoryPage;
-// import { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getSubCategories } from '@/redux/actions/subcategoryActions';
-
-// import Image from 'next/image';
-// import { usePathname } from 'next/navigation';
-// import ProductList from '@/app/productLiist/page';
-
-// const SubcategoryPage = () => {
-//   const dispatch = useDispatch();
-//   const subcategories = useSelector((state) => state.subCategory.subCategories);
-
-//   const path = usePathname();
-//   const id = path.split('/')[2];
-
-//   useEffect(() => {
-//     dispatch(getSubCategories(id));
-//   }, [dispatch, id]);
-
-//   return (
-//     <div>
-//       <div className="flex justify-around">
-//         {subcategories.map((subcategory) => (
-//           <div key={subcategory.id}>
-//             <h3>{subcategory.name}</h3>
-//             {subcategory.products.map((product) => (
-//               <div key={product.id}>
-//                 <h4>{product.title}</h4>
-//                 <p>Price: {product.price}</p>
-//                 <p>Stock: {product.stock}</p>
-//                 {/* Добавьте изображение, если требуется */}
-//                 {/* <Image
-//                   src={`${product.image}`}
-//                   width={200}
-//                   height={200}
-//                   alt="Product Image"
-//                 /> */}
-//               </div>
-//             ))}
-//           </div>
-//         ))}
-//       </div>
-//       {/* <ProductList /> */}
-//     </div>
-//   );
-// };
-
-// export default SubcategoryPage;
+import 'tailwindcss/tailwind.css';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 const SubcategoryPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const subcategories = useSelector(
-    (state: { subCategory: { categories: Category[] } }) =>
+    (state: { category: { categories: Category[] } }) =>
       state.category.categories,
   );
-  const categories = useSelector(
+  const categories: Category[] = useSelector(
     (state: { subCategory: { subCategories: Category[] } }) =>
       state.subCategory.subCategories,
   );
 
   const path = usePathname();
-  const id = path.split('/')[2];
+  const id: number = parseInt(path.split('/')[2], 10);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -240,17 +32,27 @@ const SubcategoryPage = () => {
   }, [dispatch, id]);
 
   let subCatId = null;
-  const handleSubcategoryClick = (subcategoryId) => {
+  const handleSubcategoryClick = (subcategoryId: number) => {
     dispatch(getSubCategories(subcategoryId));
     console.log(subcategoryId, 'idi');
     subCatId = subcategoryId;
   };
-  console.log(subCatId, 'fyyfyfyfyf');
+  //? Корзина
+
+  const [phone, setPhone] = useState('');
+  const [isOpen, setIsOpen] = useState(null);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div>
       <div className="flex flex-wrap justify-around ">
-        {subcategories.map((subcategory) => (
+        {subcategories.map((subcategory: Category) => (
           <div key={subcategory.id} className="relative">
             <div className="group">
               <div className="relative">
@@ -301,12 +103,52 @@ const SubcategoryPage = () => {
               <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
                 Подробнее
               </button>
-              <button className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500">
+              {/* Корзина */}
+              <button
+                onClick={openModal}
+                className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
+              >
                 В кoрзину
               </button>
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        {isOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeModal}>
+                &times;
+              </span>
+              <div className="mx-auto flex flex-col">
+                <span>Имя</span>
+                <input type="text" className="w-[400px]" />
+                <span>Телефон</span>
+
+                <PhoneInput
+                  className="border-none"
+                  style={{
+                    border: '1px solid gray',
+                    borderRadius: '5px',
+                    width: '400px',
+                  }}
+                  // style={{ width: '500px' }}
+                  defaultCountry="kg"
+                  value={phone}
+                  onChange={(phone) => setPhone(phone)}
+                />
+                <span>Адрес доставки</span>
+
+                <input
+                  className="w-[400px]"
+                  type="text"
+                  placeholder="г. Бишкек, ул. Горького 1г"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

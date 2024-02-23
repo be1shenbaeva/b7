@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { registerUser } from '../actions/authActions';
 
 interface RegistrationState {
   loading: boolean;
