@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getProducts } from '../actions/productActions';
+import { getOneProduct, getProducts } from '../actions/productActions';
 
 export interface image {
   id: number;
@@ -18,12 +18,14 @@ export interface product {
 
 export interface productState {
   products: product[];
+  oneProduct: product;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: productState = {
   products: [],
+  oneProduct: {},
   loading: false,
   error: null,
 };
@@ -43,6 +45,19 @@ const ProductSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Ошибка загрузки продуктов';
+      })
+      .addCase(getOneProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOneProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload)
+        state.oneProduct = action.payload;
+      })
+      .addCase(getOneProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Ошибка загрузки продуктов';
       });

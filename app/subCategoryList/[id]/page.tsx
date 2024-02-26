@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 
 // import { getCategories } from '@/redux/actions/categoryActions';
 
@@ -230,6 +231,7 @@ const SubcategoryPage = () => {
     (state: { subCategory: { subCategories: Category[] } }) =>
       state.subCategory.subCategories,
   );
+  console.log(categories)
 
   const path = usePathname();
   const id = path.split('/')[2];
@@ -248,16 +250,16 @@ const SubcategoryPage = () => {
   console.log(subCatId, 'fyyfyfyfyf');
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-around ">
+    <div className='container mx-auto py-8 xl:px-28'>
+      <div className="flex flex-wrap justify-between">
         {subcategories.map((subcategory) => (
           <div key={subcategory.id} className="relative">
             <div className="group">
-              <div className="relative">
+              <div className="relative className='relative xl:w-[240px] xl:h-[240px] 2xl:w-[280px] 2xl:h-[280px]">
                 <Image
-                  src={`${subcategory.image}`}
-                  width={200}
-                  height={200}
+                  src={subcategory.image}
+                  layout="fill"
+                  objectFit="cover"
                   alt={subcategory.name}
                   className="cursor-pointer"
                 />
@@ -282,7 +284,7 @@ const SubcategoryPage = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="mt-5 flex h-[480px] w-[300px] flex-col justify-between"
+            className="mt-5 flex h-[440px] w-[300px] flex-col justify-between"
           >
             <div>
               <Image
@@ -293,14 +295,16 @@ const SubcategoryPage = () => {
                 alt="2skdjfs"
               />
             </div>
-            <h3 className=" mt-[50px] text-lg font-semibold">
+            <h3 className=" mt-[30px] text-lg font-semibold">
               {category.title}
             </h3>
-            <h3 className="mb-10 mt-4 font-light">от {category.price} сом</h3>
+            <h3 className="mb-10 mt-2 font-light">от {category.price} сом</h3>
             <div className="flex justify-center space-x-1 font-light">
-              <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
-                Подробнее
-              </button>
+              <Link href={`/productDetails/${category.id}`}>
+                <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
+                  Подробнее
+                </button>
+              </Link>
               <button className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500">
                 В кoрзину
               </button>
