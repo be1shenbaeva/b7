@@ -1,5 +1,5 @@
 'use client';
-
+import '@/app/ui/css/style.css';
 import { getCategories } from '@/redux/actions/categoryActions';
 import { getSubCategories } from '@/redux/actions/subcategoryActions';
 import { Category } from '@/redux/slices/categorySlices';
@@ -11,6 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'tailwindcss/tailwind.css';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
+import {
+  CartItem,
+  addToCart,
+  clearCart,
+  removeFromCart,
+} from '@/redux/slices/cartSlice';
 
 const SubcategoryPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +53,34 @@ const SubcategoryPage = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  //! Cart
+
+  const cart = useSelector((state) => state.cart);
+
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
+
+  console.log(cart);
+
+  const handleRemoveFromCart = (id, price) => {
+    dispatch(removeFromCart({ id, price }));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  const addAndOpen = (category) => {
+    handleAddToCart({
+      id: category.id,
+      title: category.title,
+      price: category.price,
+      quantity: 1, // или любое другое начальное количество
+    });
+    openModal();
   };
 
   return (
@@ -105,7 +139,7 @@ const SubcategoryPage = () => {
               </button>
               {/* Корзина */}
               <button
-                onClick={openModal}
+                onClick={() => addAndOpen(category)}
                 className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
               >
                 В кoрзину
@@ -121,19 +155,40 @@ const SubcategoryPage = () => {
               <span className="close" onClick={closeModal}>
                 &times;
               </span>
+
+              {/* отображение продуктов в корзине */}
+              <div>
+                <h2>Shopping Cart</h2>
+                <ul>
+                  {cart.items.map((item) => (
+                    <li key={item.id}>
+                      <div>{item.title}</div>
+                      <div>{item.price}</div>
+                      <div>{item.subtotal}</div>
+                      <button onClick={() => handleAddToCart(item)}>+</button>
+                      <div>{item.quantity}</div>
+                      <button
+                        onClick={() =>
+                          handleRemoveFromCart(item.id, item.price)
+                        }
+                      >
+                        -
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div>Total: {cart.total}</div>
+                <button onClick={handleClearCart}>Clear Cart</button>
+              </div>
+              {/* отображение продуктов в корзине */}
+
               <div className="mx-auto flex flex-col">
                 <span>Имя</span>
                 <input type="text" className="w-[400px]" />
                 <span>Телефон</span>
 
                 <PhoneInput
-                  className="border-none"
-                  style={{
-                    border: '1px solid gray',
-                    borderRadius: '5px',
-                    width: '400px',
-                  }}
-                  // style={{ width: '500px' }}
+                  className=""
                   defaultCountry="kg"
                   value={phone}
                   onChange={(phone) => setPhone(phone)}

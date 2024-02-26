@@ -3,22 +3,11 @@ const nextConfig = {};
 
 module.exports = nextConfig;
 
-module.exports = {
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: [
-        options.defaultLoaders.babel,
-        {
-          loader: 'sass-loader',
-          options: {
-            // Добавьте параметры для sass-loader при необходимости
-          },
-        },
-      ],
-    });
+const path = require('path');
 
-    return config;
+module.exports = {
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
   },
   images: {
     domains: ['13.51.165.176'],

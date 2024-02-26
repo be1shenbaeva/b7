@@ -3,6 +3,7 @@ import registrationReducer from './slices/authSlice';
 import categorySlices from './slices/categorySlices';
 import productSlice, { product } from './slices/productSlice';
 import subCategorySlice from './slices/subCategorySlice';
+import cartSlice from './slices/cartSlice';
 
 interface ProductState {
   products: product[];
@@ -20,6 +21,7 @@ const store = configureStore({
     category: categorySlices,
     products: productSlice,
     subCategory: subCategorySlice,
+    cart: cartSlice,
   },
 });
 
