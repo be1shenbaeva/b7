@@ -8,7 +8,7 @@ import { montserrat } from '@/app/ui/fonts';
 export default function Navbar() {
   return (
     <header
-      className={`${montserrat.className} loaded-155 container mx-auto flex flex-wrap items-end justify-between p-4 py-2 font-light user-select-none sm:p-9`}
+      className={`${montserrat.className} loaded-155 container mx-auto flex flex-wrap items-end justify-between py-8 px-20 font-light user-select-none `}
     >
       {/* Логотип */}
       <div className="mb-4 sm:mb-0">
