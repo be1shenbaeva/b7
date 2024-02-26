@@ -157,6 +157,7 @@ const SubcategoryPage = () => {
               </span>
 
               {/* отображение продуктов в корзине */}
+
               <div>
                 <h2>Shopping Cart</h2>
                 <ul>
