@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-<!-- import 'tailwindcss/tailwind.css';
+import 'tailwindcss/tailwind.css';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import {
@@ -16,7 +16,7 @@ import {
   addToCart,
   clearCart,
   removeFromCart,
-} from '@/redux/slices/cartSlice'; -->
+} from '@/redux/slices/cartSlice';
 import Link from 'next/link';
 
 // import { getCategories } from '@/redux/actions/categoryActions';
@@ -347,22 +347,16 @@ const SubcategoryPage = () => {
             </h3>
             <h3 className="mb-10 mt-2 font-light">от {category.price} сом</h3>
             <div className="flex justify-center space-x-1 font-light">
-<!--               <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
-                Подробнее
-              </button>
               {/* Корзина */}
-              <button
-                onClick={() => addAndOpen(category)}
-                className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
-              > -->
               <Link href={`/productDetails/${category.id}`}>
                 <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
                   Подробнее
                 </button>
               </Link>
-              <button className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500">
-                В кoрзину
-              </button>
+              <button
+                onClick={() => addAndOpen(category)}
+                className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
+              >В корзину</button>
             </div>
           </div>
         ))}
