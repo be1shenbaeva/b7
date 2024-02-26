@@ -1,13 +1,22 @@
 'use client';
-
-import ProductList from '@/app/productLiist/page';
+import '@/app/ui/css/style.css';
 import { getCategories } from '@/redux/actions/categoryActions';
 import { getSubCategories } from '@/redux/actions/subcategoryActions';
 import { Category } from '@/redux/slices/categorySlices';
+import { AppDispatch } from '@/redux/store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+<!-- import 'tailwindcss/tailwind.css';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+import {
+  CartItem,
+  addToCart,
+  clearCart,
+  removeFromCart,
+} from '@/redux/slices/cartSlice'; -->
 import Link from 'next/link';
 
 // import { getCategories } from '@/redux/actions/categoryActions';
@@ -222,19 +231,19 @@ import Link from 'next/link';
 // export default SubcategoryPage;
 
 const SubcategoryPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const subcategories = useSelector(
-    (state: { subCategory: { categories: Category[] } }) =>
+    (state: { category: { categories: Category[] } }) =>
       state.category.categories,
   );
-  const categories = useSelector(
+  const categories: Category[] = useSelector(
     (state: { subCategory: { subCategories: Category[] } }) =>
       state.subCategory.subCategories,
   );
   console.log(categories)
 
   const path = usePathname();
-  const id = path.split('/')[2];
+  const id: number = parseInt(path.split('/')[2], 10);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -242,12 +251,50 @@ const SubcategoryPage = () => {
   }, [dispatch, id]);
 
   let subCatId = null;
-  const handleSubcategoryClick = (subcategoryId) => {
+  const handleSubcategoryClick = (subcategoryId: number) => {
     dispatch(getSubCategories(subcategoryId));
     console.log(subcategoryId, 'idi');
     subCatId = subcategoryId;
   };
-  console.log(subCatId, 'fyyfyfyfyf');
+  //? Корзина
+
+  const [phone, setPhone] = useState('');
+  const [isOpen, setIsOpen] = useState(null);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  //! Cart
+
+  const cart = useSelector((state) => state.cart);
+
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
+
+  console.log(cart);
+
+  const handleRemoveFromCart = (id, price) => {
+    dispatch(removeFromCart({ id, price }));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  const addAndOpen = (category) => {
+    handleAddToCart({
+      id: category.id,
+      title: category.title,
+      price: category.price,
+      quantity: 1, // или любое другое начальное количество
+    });
+    openModal();
+  };
 
   return (
     <div className='container mx-auto py-8 xl:px-28'>
@@ -300,6 +347,14 @@ const SubcategoryPage = () => {
             </h3>
             <h3 className="mb-10 mt-2 font-light">от {category.price} сом</h3>
             <div className="flex justify-center space-x-1 font-light">
+<!--               <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
+                Подробнее
+              </button>
+              {/* Корзина */}
+              <button
+                onClick={() => addAndOpen(category)}
+                className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
+              > -->
               <Link href={`/productDetails/${category.id}`}>
                 <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
                   Подробнее
@@ -311,6 +366,63 @@ const SubcategoryPage = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        {isOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={closeModal}>
+                &times;
+              </span>
+
+              {/* отображение продуктов в корзине */}
+              <div>
+                <h2>Shopping Cart</h2>
+                <ul>
+                  {cart.items.map((item) => (
+                    <li key={item.id}>
+                      <div>{item.title}</div>
+                      <div>{item.price}</div>
+                      <div>{item.subtotal}</div>
+                      <button onClick={() => handleAddToCart(item)}>+</button>
+                      <div>{item.quantity}</div>
+                      <button
+                        onClick={() =>
+                          handleRemoveFromCart(item.id, item.price)
+                        }
+                      >
+                        -
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div>Total: {cart.total}</div>
+                <button onClick={handleClearCart}>Clear Cart</button>
+              </div>
+              {/* отображение продуктов в корзине */}
+
+              <div className="mx-auto flex flex-col">
+                <span>Имя</span>
+                <input type="text" className="w-[400px]" />
+                <span>Телефон</span>
+
+                <PhoneInput
+                  className=""
+                  defaultCountry="kg"
+                  value={phone}
+                  onChange={(phone) => setPhone(phone)}
+                />
+                <span>Адрес доставки</span>
+
+                <input
+                  className="w-[400px]"
+                  type="text"
+                  placeholder="г. Бишкек, ул. Горького 1г"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

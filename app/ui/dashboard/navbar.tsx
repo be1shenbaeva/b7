@@ -34,14 +34,15 @@ export default function Navbar() {
 
       {/* Корзина */}
       <div className="cart text-gray-500">
-        <Image src={'/cart.png'} height={30} width={30} alt="" />
+        <Link href={''}>
+          <Image src={'/cart.png'} height={30} width={30} alt="" />
+        </Link>
       </div>
 
       {/* Контактный номер */}
       <aside className="number mt-4 sm:mt-0">
         <ul>
           <Link href={'tel:+996705161165'}>
-            {' '}
             <li className={styles.fontNum}>+996 555 73 27 57</li>
           </Link>
           <li className="text-sm">связаться по телефону</li>

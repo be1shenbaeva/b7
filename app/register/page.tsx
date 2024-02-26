@@ -4,9 +4,10 @@ import { User } from '../lib/definitions';
 import { registerUser } from '@/redux/actions/authActions';
 import { useState } from 'react';
 import Link from 'next/link';
+import { AppDispatch } from '@/redux/store';
 
 const RegistrationForm: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -18,7 +19,7 @@ const RegistrationForm: React.FC = () => {
     e.preventDefault();
     console.log('Отправка данных о пользователе начата...');
     try {
-      await dispatch(registerUser(formData as User));
+      await dispatch(registerUser(formData));
       console.log('Данные о пользователе успешно отправлены!');
     } catch (error) {
       console.error('Ошибка при регистрации:', error);

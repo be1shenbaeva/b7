@@ -1,21 +1,21 @@
-import { API } from '@/app/helpers/consts';
+import { API } from '@/app/ui/dashboard/helpers/consts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-interface User {
+export interface User {
   email: string;
   password: string;
   password_confirm: string;
 }
 
-interface LogUser {
+export interface LogUser {
   email: string;
   password: string;
 }
 
-export const registerUser = createAsyncThunk<User>(
+export const registerUser = createAsyncThunk(
   'account/registerUser',
-  async (formData) => {
+  async (formData: User) => {
     try {
       const res = await axios.post(`${API}/account/register/`, formData);
       return res.data;
@@ -26,9 +26,9 @@ export const registerUser = createAsyncThunk<User>(
   },
 );
 
-export const LoginUser = createAsyncThunk<LogUser[], FormData>(
+export const LoginUser = createAsyncThunk(
   'account/login',
-  async (formData) => {
+  async (formData: LogUser) => {
     try {
       const res = await axios.post(`${API}/account/login/`, formData);
       const access = res.data.access;

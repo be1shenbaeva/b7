@@ -1,20 +1,19 @@
 'use client';
 import { useState } from 'react';
-import axios from 'axios';
-import { API } from '../helpers/consts';
 import { useDispatch } from 'react-redux';
-import { LoginUser } from '@/redux/actions/authActions';
+import { LogUser, LoginUser } from '@/redux/actions/authActions';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { AppDispatch } from '@/redux/store';
 
 const LoginForm = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
+  const dispatch = useDispatch<AppDispatch>();
+  const [formData, setFormData] = useState<LogUser>({
     email: '',
     password: '',
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +22,7 @@ const LoginForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -46,50 +45,6 @@ const LoginForm = () => {
   }
 
   return (
-    // <form
-    //   onSubmit={handleSubmit}
-    //   className="mx-auto max-w-xs rounded bg-white p-4 shadow-md"
-    // >
-    //   {error && <div className="mb-4 text-red-500">{error}</div>}
-    //   <div className="mb-4">
-    //     <label htmlFor="email" className="mb-2 block font-bold text-gray-700">
-    //       Почта:
-    //     </label>
-    //     <input
-    //       type="email"
-    //       id="email"
-    //       name="email"
-    //       value={formData.email}
-    //       onChange={handleInputChange}
-    //       className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
-    //       required
-    //     />
-    //   </div>
-    //   <div className="mb-4">
-    //     <label
-    //       htmlFor="password"
-    //       className="mb-2 block font-bold text-gray-700"
-    //     >
-    //       Пароль:
-    //     </label>
-    //     <input
-    //       type="password"
-    //       id="password"
-    //       name="password"
-    //       value={formData.password}
-    //       onChange={handleInputChange}
-    //       className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
-    //       required
-    //     />
-    //   </div>
-    //   <button
-    //     type="submit"
-    //     className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-    //     disabled={loading}
-    //   >
-    //     {loading ? 'Вход в ...' : 'Войти'}
-    //   </button>
-    // </form>
     <form
       onSubmit={handleSubmit}
       className="mx-auto max-w-xs rounded bg-white p-4 shadow-md"

@@ -1,15 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { product } from '../slices/productSlice';
 import axios from 'axios';
-import { API } from '@/app/helpers/consts';
+import { API } from '@/app/ui/dashboard/helpers/consts';
 
-export const getProducts = createAsyncThunk<product>(
+type ProductResult = product[];
+
+export const getProducts = createAsyncThunk<ProductResult>(
   'product/getProduct',
   async () => {
     try {
-      const res = await axios<product>(`${API}/products/`);
-      console.log(res.data);
-      return res.data.results;
+      const { data } = await axios<{ results: ProductResult }>(
+        `${API}/products/`,
+      );
+      return data.results;
     } catch (error) {
       console.log('Ошибка при стягивании продуктов', error);
       throw error;

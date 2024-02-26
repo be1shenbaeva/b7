@@ -1,35 +1,36 @@
-import { API } from '@/app/helpers/consts';
+import { API } from '@/app/ui/dashboard/helpers/consts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+interface SubProduct {
+  id: number;
+  images: { id: number; image: string; product: number }[];
+  title: string;
+  price: number;
+  stock: 'in_stock' | 'out_of_stock'; // Предполагаем, что это ограниченное множество значений
+  category: number;
+  discounted_price: number | null; // Может быть числом или null
+}
+
+export interface ProductsResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: SubProduct[];
+}
+
 export const getSubCategories = createAsyncThunk(
   'subCategories/getSubCategories',
-  async (subCategoryId, { rejectWithValue }) => {
+  async (subCategoryId: number) => {
     try {
       const { data } = await axios(
         `${API}/products/?category=${subCategoryId}`,
       );
       console.log(data.results, 'response');
-      return data.results;
+      return data.results as ProductsResponse;
     } catch (error) {
-      return rejectWithValue(
-        error.message || 'Что-то пошло не так при загрузке подкатегорий',
-      );
+      console.log(error);
+      throw error;
     }
   },
 );
-
-// export const getSubAllCategories = createAsyncThunk(
-//   'subCategories/getSubAllCategories',
-//   async () => {
-//     try {
-//       const { data } = await axios(`${API}/products/?category/`);
-//       console.log(data.results, 'all');
-
-//       return data.results;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   },
-// );
-// getSubAllCategories();

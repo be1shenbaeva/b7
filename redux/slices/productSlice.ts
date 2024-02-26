@@ -14,6 +14,7 @@ export interface product {
   price: number;
   stock: 'in_stock' | 'out_of_stock' | 'limited_stock';
   category: number;
+  categoryId: number;
 }
 
 export interface productState {

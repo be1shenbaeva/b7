@@ -1,11 +1,13 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '@/redux/actions/categoryActions';
 import { Category } from '@/redux/slices/categorySlices';
 import Link from 'next/link';
+import { AppDispatch } from '@/redux/store';
 
 const CategoryList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector(
     (state: { category: { categories: Category[] } }) =>
       state.category.categories,
