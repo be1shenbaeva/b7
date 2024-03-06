@@ -4,6 +4,7 @@ import LinkBar from './ui/dashboard/linkBar/page';
 import Navbar from './ui/dashboard/navbar';
 import Providers from './Providers';
 import Carousel from './ui/invoices/Carousel';
+import DetailModal from './productDetails/DetailModal';
 
 export default function RootLayout({
   children,

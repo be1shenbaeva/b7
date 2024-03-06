@@ -32,7 +32,7 @@ export const LoginUser = createAsyncThunk(
     try {
       const res = await axios.post(`${API}/account/login/`, formData);
       const access = res.data.access;
-      localStorage.setItem('accessToken', access);
+      localStorage.setItem('accessToken', JSON.stringify(access));
     } catch (error) {
       console.error('Ошибка при входе в аккаунт:', error);
       throw error;

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Carousel from '../../ui/invoices/Carousel';
+import { addToCart } from '@/redux/slices/cartSlice';
+import DetailModal from '../DetailModal';
 
 const page = () => {
   const {id} = useParams()
@@ -16,6 +18,20 @@ const page = () => {
     (state: { oneProduct: product}) => 
     state.products.oneProduct
   )
+
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
+
+  const handleClick = (category) => {
+    console.log(category)
+    handleAddToCart({
+      id: category.id,
+      title: category.title,
+      price: category.price,
+      quantity: 1, // или любое другое начальное количество
+    });
+  }
 
   useEffect(() => {
     dispatch(getOneProduct(id))
@@ -27,7 +43,7 @@ const page = () => {
         <div className="relative box-border container mx-auto py-8 px-20">
           <div className="flex w-full h-[700px]">
             <div className="w-1/2 h-full p-8">
-              <div className="relative w-full h-full">
+              <div className="z-20 relative w-full h-full">
                 
                 <Carousel oneProduct={oneProduct}></Carousel>
               
@@ -43,12 +59,13 @@ const page = () => {
 
                 <p className="mt-5 text-base">{oneProduct.dop_info}</p>
 
-                <button className="mt-8 w-full h-[50px] rounded-md bg-blueColor text-white">В корзину</button>
+                <button onClick={() => handleClick(oneProduct)} className="mt-8 w-full h-[50px] rounded-md bg-blueColor text-white">В корзину</button>
               </div>
             </div>
           </div>
         </div>
       )}
+      {/*<DetailModal />*/}
     </>
   )
 }

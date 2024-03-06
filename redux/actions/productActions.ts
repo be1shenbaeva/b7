@@ -35,3 +35,33 @@ export const getOneProduct = createAsyncThunk<product>(
     }
   },
 );
+
+
+const getAuthConfig = () => {
+  const tokens = JSON.parse(localStorage.getItem('accessToken') || '{}');
+  if(!tokens) return false;
+  const Authorization = `Bearer ${tokens}`;
+  const config = {
+    headers: {
+      Authorization,
+    },
+  };
+  return config
+}
+
+console.log(getAuthConfig())
+const config = getAuthConfig()
+console.log(config)
+
+export const createOrder = createAsyncThunk(
+  'product/createOrder',
+  async (formData: any) => {
+    console.log(formData)
+    try {
+      const res = await axios.post(`${API}/orders/create/`, formData, config)
+      console.log(res)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+)

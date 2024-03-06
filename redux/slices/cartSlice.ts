@@ -18,14 +18,14 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action) {
-      const { id, title, price } = action.payload;
+      const { id, title, price, image } = action.payload;
       const existingItem = state.items.find((item) => item.id === id);
 
       if (existingItem) {
         existingItem.quantity++;
         existingItem.subtotal = existingItem.quantity * price; // Пересчитываем сумму одного продукта
       } else {
-        state.items.push({ id, title, price, quantity: 1, subtotal: price }); // Добавляем новое поле subtotal
+        state.items.push({ id, title, price, image, quantity: 1, subtotal: price }); // Добавляем новое поле subtotal
       }
 
       state.total = state.items.reduce(
@@ -36,7 +36,7 @@ const cartSlice = createSlice({
       // Сохраняем состояние корзины в локальном хранилище
       saveCartToLocalStorage(state);
     },
-    removeFromCart(state, action) {
+    removeOneCount(state, action) {
       const { id, price } = action.payload;
       const existingItem = state.items.find((item) => item.id === id);
 
@@ -56,6 +56,14 @@ const cartSlice = createSlice({
       // Сохраняем состояние корзины в локальном хранилище
       saveCartToLocalStorage(state);
     },
+    removeFromCart(state, action) {
+      const { id } = action.payload;
+  
+      state.items = state.items.filter((item) => item.id !== id);
+  
+      state.total = state.items.reduce((total, item) => total + item.subtotal, 0);
+      saveCartToLocalStorage(state);
+    },
     clearCart(state) {
       state.items = [];
       state.total = 0;
@@ -66,6 +74,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, removeOneCount } = cartSlice.actions;
 
 export default cartSlice.reducer;
