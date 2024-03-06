@@ -52,6 +52,7 @@ const SubcategoryPage = () => {
   //   const idFromPath: number = parseInt(path.split('/')[2], 10);
   //   setCategoryId(idFromPath);
   // }, [path]);
+  // kjgerkjhgrkjeh
 
   // useEffect(() => {
   //   dispatch(getCategories());
