@@ -19,3 +19,19 @@ export const getProducts = createAsyncThunk<ProductResult>(
     }
   },
 );
+
+
+export const getOneProduct = createAsyncThunk<product>(
+  'product/getOneProduct',
+  async (id: any) => {
+    console.log(id)
+    try {
+      const res = await axios<product>(`${API}/products/${id}`);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      console.log('Ошибка при стягивании продуктов', error);
+      throw error;
+    }
+  },
+);

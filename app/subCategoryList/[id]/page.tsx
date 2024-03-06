@@ -1,7 +1,10 @@
 'use client';
 import '@/app/ui/css/style.css';
 import { getCategories } from '@/redux/actions/categoryActions';
-import { getSubCategories } from '@/redux/actions/subcategoryActions';
+import {
+  getSubCategories,
+  updateCurrentPage,
+} from '@/redux/actions/subcategoryActions';
 import { Category } from '@/redux/slices/categorySlices';
 import { AppDispatch } from '@/redux/store';
 import Image from 'next/image';
@@ -11,39 +14,76 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'tailwindcss/tailwind.css';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import {
-  CartItem,
-  addToCart,
-  clearCart,
-  removeFromCart,
-} from '@/redux/slices/cartSlice';
+import { addToCart, clearCart, removeFromCart } from '@/redux/slices/cartSlice';
+import Link from 'next/link';
 
 const SubcategoryPage = () => {
+  const [localCurrentPage, setLocalCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); // Инициализация totalPages с 1
+
+  const currentPage = useSelector(
+    (state: { category: { categories: Category[] } }) =>
+      state.subCategory.currentPage,
+  );
+  console.log(currentPage, 'state');
+
   const dispatch = useDispatch<AppDispatch>();
   const subcategories = useSelector(
     (state: { category: { categories: Category[] } }) =>
       state.category.categories,
   );
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(subcategories.length / 4));
+  }, [subcategories]);
+
   const categories: Category[] = useSelector(
     (state: { subCategory: { subCategories: Category[] } }) =>
       state.subCategory.subCategories,
   );
 
+  console.log(getCategories(), 'dddd');
+
   const path = usePathname();
   const id: number = parseInt(path.split('/')[2], 10);
+  const [categoryId, setCategoryId] = useState(id);
+
+  // useEffect(() => {
+  //   const idFromPath: number = parseInt(path.split('/')[2], 10);
+  //   setCategoryId(idFromPath);
+  // }, [path]);
+
+  // useEffect(() => {
+  //   dispatch(getCategories());
+  //   dispatch(
+  //     getSubCategories({
+  //       subCategoryId: id,
+  //       currentPage: localCurrentPage,
+  //     }),
+  //   );
+  // }, [dispatch, categoryId, localCurrentPage]);
 
   useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getSubCategories(id));
-  }, [dispatch, id]);
+    setLocalCurrentPage(1); // Сбросить localCurrentPage при изменении категории
+  }, [categoryId]);
 
-  let subCatId = null;
   const handleSubcategoryClick = (subcategoryId: number) => {
-    dispatch(getSubCategories(subcategoryId));
-    console.log(subcategoryId, 'idi');
-    subCatId = subcategoryId;
+    setCategoryId(subcategoryId);
+    dispatch(
+      getSubCategories({
+        subCategoryId: subcategoryId,
+        currentPage: 1, // Установить currentPage в 1 при изменении категории
+      }),
+    );
+    dispatch(updateCurrentPage(1));
+    setLocalCurrentPage(1);
   };
+
   //? Корзина
+
+  useEffect(() => {
+    setCategoryId(categoryId); // Установить значение categoryId при загрузке компонента
+  }, [id]);
 
   const [phone, setPhone] = useState('');
   const [isOpen, setIsOpen] = useState(null);
@@ -63,7 +103,7 @@ const SubcategoryPage = () => {
     dispatch(addToCart(item));
   };
 
-  console.log(cart);
+  console.log(localCurrentPage);
 
   const handleRemoveFromCart = (id, price) => {
     dispatch(removeFromCart({ id, price }));
@@ -78,22 +118,46 @@ const SubcategoryPage = () => {
       id: category.id,
       title: category.title,
       price: category.price,
-      quantity: 1, // или любое другое начальное количество
+      quantity: 1,
     });
     openModal();
   };
 
+  // Пагинация;
+
+  const loadNextPage = async () => {
+    const nextPage = localCurrentPage + 1;
+    dispatch(
+      getSubCategories({
+        subCategoryId: categoryId,
+        currentPage: nextPage,
+      }),
+    );
+    setLocalCurrentPage(nextPage);
+  };
+
+  const loadPrevPage = async () => {
+    const prevPage = localCurrentPage - 1;
+    dispatch(
+      getSubCategories({
+        subCategoryId: categoryId,
+        currentPage: prevPage,
+      }),
+    );
+    setLocalCurrentPage(prevPage);
+  };
+
   return (
-    <div>
-      <div className="flex flex-wrap justify-around ">
-        {subcategories.map((subcategory: Category) => (
+    <div className="container mx-auto py-8 xl:px-28">
+      <div className="flex flex-wrap justify-between">
+        {subcategories.map((subcategory) => (
           <div key={subcategory.id} className="relative">
             <div className="group">
-              <div className="relative">
+              <div className="className='relative relative xl:h-[240px] xl:w-[240px] 2xl:h-[280px] 2xl:w-[280px]">
                 <Image
-                  src={`${subcategory.image}`}
-                  width={200}
-                  height={200}
+                  src={subcategory.image}
+                  layout="fill"
+                  objectFit="cover"
                   alt={subcategory.name}
                   className="cursor-pointer"
                 />
@@ -118,7 +182,7 @@ const SubcategoryPage = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="mt-5 flex h-[480px] w-[300px] flex-col justify-between"
+            className="mt-5 flex h-[440px] w-[300px] flex-col justify-between"
           >
             <div>
               <Image
@@ -129,20 +193,22 @@ const SubcategoryPage = () => {
                 alt="2skdjfs"
               />
             </div>
-            <h3 className=" mt-[50px] text-lg font-semibold">
+            <h3 className=" mt-[30px] text-lg font-semibold">
               {category.title}
             </h3>
-            <h3 className="mb-10 mt-4 font-light">от {category.price} сом</h3>
+            <h3 className="mb-10 mt-2 font-light">от {category.price} сом</h3>
             <div className="flex justify-center space-x-1 font-light">
-              <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
-                Подробнее
-              </button>
               {/* Корзина */}
+              <Link href={`/productDetails/${category.id}`}>
+                <button className="w-30 h-8 rounded-md bg-blueColor px-4 text-white">
+                  Подробнее
+                </button>
+              </Link>
               <button
                 onClick={() => addAndOpen(category)}
                 className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
               >
-                В кoрзину
+                В корзину
               </button>
             </div>
           </div>
@@ -206,6 +272,14 @@ const SubcategoryPage = () => {
           </div>
         )}
       </div>
+      <button onClick={loadNextPage} disabled={localCurrentPage >= totalPages}>
+        след страница ебать
+      </button>
+      <div>Текущая страница: {localCurrentPage}</div>
+      <div>Общее количество страниц: {totalPages}</div>
+      <button onClick={loadPrevPage} disabled={localCurrentPage <= 1}>
+        назад сука
+      </button>
     </div>
   );
 };

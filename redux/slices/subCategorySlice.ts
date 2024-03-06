@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getSubCategories } from '../actions/subcategoryActions';
+import {
+  getSubCategories,
+  updateCurrentPage,
+  updateSelectedCategory,
+} from '../actions/subcategoryActions';
 
 const subCategorySlice = createSlice({
   name: 'subCategory',
   initialState: {
     subCategories: [],
     SubAllCategories: [],
+    currentPage: 1,
     loading: false,
     error: null,
   },
@@ -19,6 +24,12 @@ const subCategorySlice = createSlice({
       .addCase(getSubCategories.fulfilled, (state, action) => {
         state.loading = false;
         state.subCategories = action.payload;
+      })
+      .addCase(updateCurrentPage, (state, action) => {
+        state.currentPage = action.payload;
+      })
+      .addCase(updateSelectedCategory, (state, action) => {
+        state.selectedCategory = action.payload;
       });
   },
 });

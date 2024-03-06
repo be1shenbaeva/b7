@@ -1,5 +1,5 @@
 import { API } from '@/app/ui/dashboard/helpers/consts';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface SubProduct {
@@ -21,10 +21,11 @@ export interface ProductsResponse {
 
 export const getSubCategories = createAsyncThunk(
   'subCategories/getSubCategories',
-  async (subCategoryId: number) => {
+  async (payload: { subCategoryId: number; currentPage: number }) => {
+    const { subCategoryId, currentPage } = payload;
     try {
-      const { data } = await axios(
-        `${API}/products/?category=${subCategoryId}`,
+      const { data } = await axios.get(
+        `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
       );
       console.log(data.results, 'response');
       return data.results as ProductsResponse;
@@ -34,3 +35,48 @@ export const getSubCategories = createAsyncThunk(
     }
   },
 );
+
+// export const getSubCategories = createAsyncThunk(
+//   'subCategories/getSubCategories',
+//   async (subCategoryId: number, currentPage) => {
+//     console.log(currentPage, 'actioncur');
+
+//     try {
+//       const { data } = await axios.get(
+//         `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
+//       );
+//       console.log(data.results, 'response');
+//       return data.results as ProductsResponse;
+//     } catch (error) {
+//       throw error;
+//     }
+//   },
+// );
+
+import { createAction } from '@reduxjs/toolkit';
+
+// Определение экшна для обновления текущей страницы
+export const updateCurrentPage = createAction<number>(
+  'subCategory/updateCurrentPage',
+);
+
+export const updateSelectedCategory = createAction<number>(
+  'subCategory/updateSelectedCategory',
+);
+
+// export const getSubCategories = createAsyncThunk(
+//   'subCategories/getSubCategories',
+//   async (subCategoryId: number, { getState, requestId, rejectWithValue }) => {
+//     const currentPage = getState().subCategories.currentPage;
+//     try {
+//       const { data } = await axios.get(
+//         `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
+//       );
+//       console.log(data.results, 'response');
+//       return data.results as ProductsResponse;
+//     } catch (error) {
+//       console.log(error);
+//       return rejectWithValue(error.message);
+//     }
+//   },
+// );
