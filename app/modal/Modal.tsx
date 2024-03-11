@@ -36,6 +36,7 @@ const Modal = ({ isOpen, closeModal }) => {
       quantity: item.quantity // Добавляем ключ "quantity" с количеством
     }));
   
+    console.log(cart)
     // Обновление состояния formData
     setFormData((prevState: any) => ({
       ...prevState,

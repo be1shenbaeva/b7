@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 const ModalItem = ({ item }) => {
+  console.log(item)
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
