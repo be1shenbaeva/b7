@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
 const ModalItem = ({ item }) => {
-  console.log(item);
-
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
