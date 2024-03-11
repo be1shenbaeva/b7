@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { product } from '../slices/productSlice';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { API } from '@/app/ui/dashboard/helpers/consts';
 
 type ProductResult = product[];
@@ -20,11 +20,10 @@ export const getProducts = createAsyncThunk<ProductResult>(
   },
 );
 
-
 export const getOneProduct = createAsyncThunk<product>(
   'product/getOneProduct',
   async (id: any) => {
-    console.log(id)
+    console.log(id);
     try {
       const res = await axios<product>(`${API}/products/${id}`);
       console.log(res.data);
@@ -36,32 +35,30 @@ export const getOneProduct = createAsyncThunk<product>(
   },
 );
 
-
 const getAuthConfig = () => {
   const tokens = JSON.parse(localStorage.getItem('accessToken') || '{}');
-  if(!tokens) return false;
+  if (!tokens) return false;
   const Authorization = `Bearer ${tokens}`;
   const config = {
     headers: {
       Authorization,
     },
   };
-  return config
-}
+  return config;
+};
 
-console.log(getAuthConfig())
-const config = getAuthConfig()
-console.log(config)
+console.log(getAuthConfig());
+const config = getAuthConfig();
 
 export const createOrder = createAsyncThunk(
   'product/createOrder',
   async (formData: any) => {
-    console.log(formData)
+    console.log(formData);
     try {
-      const res = await axios.post(`${API}/orders/create/`, formData, config)
-      console.log(res)
-    } catch(error) {
-      console.log(error)
+      const res = await axios.post(`${API}/orders/create/`, formData, config);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
     }
-  }
-)
+  },
+);

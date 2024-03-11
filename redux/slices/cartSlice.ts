@@ -1,13 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Извлекаем данные из локального хранилища, если они там есть
+export interface CartItem {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  quantity: number;
+  subtotal: number;
+}
+
+interface CartState {
+  items: CartItem[];
+  total: number;
+}
+
 const loadCartFromLocalStorage = () => {
   const cartData = localStorage.getItem('cart');
   return cartData ? JSON.parse(cartData) : { items: [], total: 0 };
 };
 
-// Сохраняем данные корзины в локальном хранилище
-const saveCartToLocalStorage = (cartState) => {
+const saveCartToLocalStorage = (cartState: CartState) => {
   localStorage.setItem('cart', JSON.stringify(cartState));
 };
 
@@ -19,61 +31,69 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const { id, title, price, image } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
+      const existingItem = state.items.find((item: CartItem) => item.id === id);
 
       if (existingItem) {
         existingItem.quantity++;
-        existingItem.subtotal = existingItem.quantity * price; // Пересчитываем сумму одного продукта
+        existingItem.subtotal = existingItem.quantity * price;
       } else {
-        state.items.push({ id, title, price, image, quantity: 1, subtotal: price }); // Добавляем новое поле subtotal
+        state.items.push({
+          id,
+          title,
+          price,
+          image,
+          quantity: 1,
+          subtotal: price,
+        });
       }
 
       state.total = state.items.reduce(
-        (total, item) => total + item.subtotal,
+        (total: number, item: CartItem) => total + item.subtotal,
         0,
-      ); // Пересчитываем общую сумму корзины
+      );
 
-      // Сохраняем состояние корзины в локальном хранилище
       saveCartToLocalStorage(state);
     },
     removeOneCount(state, action) {
       const { id, price } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
+      const existingItem = state.items.find((item: CartItem) => item.id === id);
 
       if (existingItem) {
         if (existingItem.quantity === 1) {
-          state.items = state.items.filter((item) => item.id !== id);
+          state.items = state.items.filter((item: CartItem) => item.id !== id);
         } else {
           existingItem.quantity--;
-          existingItem.subtotal = existingItem.quantity * price; // Пересчитываем сумму одного продукта
+          existingItem.subtotal = existingItem.quantity * price;
         }
         state.total = state.items.reduce(
-          (total, item) => total + item.subtotal,
+          (total: number, item: CartItem) => total + item.subtotal,
           0,
-        ); // Пересчитываем общую сумму корзины
+        );
       }
 
-      // Сохраняем состояние корзины в локальном хранилище
       saveCartToLocalStorage(state);
     },
     removeFromCart(state, action) {
       const { id } = action.payload;
-  
-      state.items = state.items.filter((item) => item.id !== id);
-  
-      state.total = state.items.reduce((total, item) => total + item.subtotal, 0);
+
+      state.items = state.items.filter((item: CartItem) => item.id !== id);
+
+      state.total = state.items.reduce(
+        (total: number, item: CartItem) => total + item.subtotal,
+        0,
+      );
       saveCartToLocalStorage(state);
     },
     clearCart(state) {
       state.items = [];
       state.total = 0;
 
-      // Сохраняем состояние корзины в локальном хранилище
       saveCartToLocalStorage(state);
     },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, removeOneCount } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, removeOneCount } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

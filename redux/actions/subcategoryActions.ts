@@ -1,5 +1,5 @@
 import { API } from '@/app/ui/dashboard/helpers/consts';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface SubProduct {
@@ -7,9 +7,9 @@ interface SubProduct {
   images: { id: number; image: string; product: number }[];
   title: string;
   price: number;
-  stock: 'in_stock' | 'out_of_stock'; // Предполагаем, что это ограниченное множество значений
+  stock: 'in_stock' | 'out_of_stock';
   category: number;
-  discounted_price: number | null; // Может быть числом или null
+  discounted_price: number | null;
 }
 
 export interface ProductsResponse {
@@ -21,10 +21,11 @@ export interface ProductsResponse {
 
 export const getSubCategories = createAsyncThunk(
   'subCategories/getSubCategories',
-  async (subCategoryId: number) => {
+  async (payload: { subCategoryId: number; currentPage: number }) => {
+    const { subCategoryId, currentPage } = payload;
     try {
-      const { data } = await axios(
-        `${API}/products/?category=${subCategoryId}`,
+      const { data } = await axios.get(
+        `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
       );
       //console.log(data.results, 'response');
       return data.results as ProductsResponse;
@@ -34,3 +35,45 @@ export const getSubCategories = createAsyncThunk(
     }
   },
 );
+
+// export const getSubCategories = createAsyncThunk(
+//   'subCategories/getSubCategories',
+//   async (subCategoryId: number, currentPage) => {
+//     console.log(currentPage, 'actioncur');
+
+//     try {
+//       const { data } = await axios.get(
+//         `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
+//       );
+//       console.log(data.results, 'response');
+//       return data.results as ProductsResponse;
+//     } catch (error) {
+//       throw error;
+//     }
+//   },
+// );
+
+import { createAction } from '@reduxjs/toolkit';
+
+// Определение экшна для обновления текущей страницы
+
+export const updateSelectedCategory = createAction<number>(
+  'subCategory/updateSelectedCategory',
+);
+
+// export const getSubCategories = createAsyncThunk(
+//   'subCategories/getSubCategories',
+//   async (subCategoryId: number, { getState, requestId, rejectWithValue }) => {
+//     const currentPage = getState().subCategories.currentPage;
+//     try {
+//       const { data } = await axios.get(
+//         `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
+//       );
+//       console.log(data.results, 'response');
+//       return data.results as ProductsResponse;
+//     } catch (error) {
+//       console.log(error);
+//       return rejectWithValue(error.message);
+//     }
+//   },
+// );
