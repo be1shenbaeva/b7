@@ -1,5 +1,6 @@
 'use client'
 import { Children, useState } from 'react'
+import ImageZoom from '@/app/productDetails/DetailModal';
 
   //export default function Carousel({ oneProduct }: any) {
   //  const [curr, setCurr] = useState(0);
@@ -72,6 +73,13 @@ import { Children, useState } from 'react'
       console.log(index);
       setCurr(index);
     };
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = (e) => {
+      e.preventDefault();
+      setOpen(false);
+    };
   
     return (
       <>
@@ -89,6 +97,7 @@ import { Children, useState } from 'react'
                       }`}
                       alt={elem.product}
                     />
+                    //<ImageZoom imageUrl={elem.img} zoomFactor={2} onClose={handleClose} />
                   ))}
                 </>
               )}
@@ -97,14 +106,14 @@ import { Children, useState } from 'react'
           <div className="relative w-full mx-auto bottom-[-10px] w-1/2 h-[100px] flex justify-center pr-[30px]">
           {oneProduct.images && oneProduct.images.map((elem, index) => (
             <img
-              key={index}
-              className={`z-10 w-[60px] m-1 h-[55px] transition-transform duration-300 ${
-                index === curr ? "scale-105" : ""
-              }`}
-              onClick={() => handleImageClick(index)}
-              src={`http://13.51.165.176${elem.image}`}
-              alt=""
-            />
+            key={index}
+            className={`z-10 w-[60px] m-1 h-[55px] transition-transform duration-300 ${
+              index === curr ? "scale-105" : ""
+            }`}
+            onClick={() => handleImageClick(index)}
+            src={`http://13.51.165.176${elem.image}`}
+            alt=""
+          />
           ))}
         </div>
         </div>

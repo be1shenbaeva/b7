@@ -7,9 +7,9 @@ interface SubProduct {
   images: { id: number; image: string; product: number }[];
   title: string;
   price: number;
-  stock: 'in_stock' | 'out_of_stock'; // Предполагаем, что это ограниченное множество значений
+  stock: 'in_stock' | 'out_of_stock';
   category: number;
-  discounted_price: number | null; // Может быть числом или null
+  discounted_price: number | null;
 }
 
 export interface ProductsResponse {
@@ -27,7 +27,7 @@ export const getSubCategories = createAsyncThunk(
       const { data } = await axios.get(
         `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
       );
-      console.log(data.results, 'response');
+      //console.log(data.results, 'response');
       return data.results as ProductsResponse;
     } catch (error) {
       console.log(error);
@@ -56,9 +56,6 @@ export const getSubCategories = createAsyncThunk(
 import { createAction } from '@reduxjs/toolkit';
 
 // Определение экшна для обновления текущей страницы
-export const updateCurrentPage = createAction<number>(
-  'subCategory/updateCurrentPage',
-);
 
 export const updateSelectedCategory = createAction<number>(
   'subCategory/updateSelectedCategory',

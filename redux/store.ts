@@ -9,10 +9,8 @@ interface ProductState {
   products: product[];
 }
 
-// Предполагаемая структура всего состояния приложения
 export interface AppState {
   products: ProductState;
-  // Другие части состояния приложения
 }
 
 const store = configureStore({
@@ -26,5 +24,5 @@ const store = configureStore({
 });
 
 export default store;
-export type RootState = ReturnType<typeof store.getState>;
+// export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

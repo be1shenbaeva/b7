@@ -1,10 +1,6 @@
 'use client';
 import '@/app/ui/css/style.css';
-import { getCategories } from '@/redux/actions/categoryActions';
-import {
-  getSubCategories,
-  updateCurrentPage,
-} from '@/redux/actions/subcategoryActions';
+import { getSubCategories } from '@/redux/actions/subcategoryActions';
 import { Category } from '@/redux/slices/categorySlices';
 import { AppDispatch } from '@/redux/store';
 import Image from 'next/image';
@@ -12,140 +8,70 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'tailwindcss/tailwind.css';
-import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import { addToCart, clearCart, removeFromCart } from '@/redux/slices/cartSlice';
+import { CartItem, addToCart } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
+import Modal from '@/app/modal/Modal';
 
 const SubcategoryPage = () => {
-  const [localCurrentPage, setLocalCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1); // Инициализация totalPages с 1
-
-  const currentPage = useSelector(
-    (state: { category: { categories: Category[] } }) =>
-      state.subCategory.currentPage,
-  );
-  console.log(currentPage, 'state');
-
   const dispatch = useDispatch<AppDispatch>();
   const subcategories = useSelector(
     (state: { category: { categories: Category[] } }) =>
       state.category.categories,
   );
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(subcategories.length / 4));
-  }, [subcategories]);
-
   const categories: Category[] = useSelector(
     (state: { subCategory: { subCategories: Category[] } }) =>
       state.subCategory.subCategories,
   );
 
-  console.log(getCategories(), 'dddd');
-
   const path = usePathname();
   const id: number = parseInt(path.split('/')[2], 10);
   const [categoryId, setCategoryId] = useState(id);
-
-  // useEffect(() => {
-  //   const idFromPath: number = parseInt(path.split('/')[2], 10);
-  //   setCategoryId(idFromPath);
-  // }, [path]);
-  // kjgerkjhgrkjeh
-
-  // useEffect(() => {
-  //   dispatch(getCategories());
-  //   dispatch(
-  //     getSubCategories({
-  //       subCategoryId: id,
-  //       currentPage: localCurrentPage,
-  //     }),
-  //   );
-  // }, [dispatch, categoryId, localCurrentPage]);
-
-  useEffect(() => {
-    setLocalCurrentPage(1); // Сбросить localCurrentPage при изменении категории
-  }, [categoryId]);
 
   const handleSubcategoryClick = (subcategoryId: number) => {
     setCategoryId(subcategoryId);
     dispatch(
       getSubCategories({
         subCategoryId: subcategoryId,
-        currentPage: 1, // Установить currentPage в 1 при изменении категории
+        currentPage: 1,
       }),
     );
-    dispatch(updateCurrentPage(1));
-    setLocalCurrentPage(1);
+    // setLocalCurrentPage(1);
   };
 
   //? Корзина
 
   useEffect(() => {
-    setCategoryId(categoryId); // Установить значение categoryId при загрузке компонента
+    setCategoryId(categoryId);
   }, [id]);
 
-  const [phone, setPhone] = useState('');
-  const [isOpen, setIsOpen] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
     setIsOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setIsOpen(false);
+    document.body.style.overflow = '';
   };
 
   //! Cart
-
-  const cart = useSelector((state) => state.cart);
-
-  const handleAddToCart = (item) => {
+  const handleAddToCart = (item: CartItem) => {
     dispatch(addToCart(item));
   };
 
-  console.log(localCurrentPage);
-
-  const handleRemoveFromCart = (id, price) => {
-    dispatch(removeFromCart({ id, price }));
-  };
-
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
-
-  const addAndOpen = (category) => {
+  const addAndOpen = (category: Category) => {
+    console.log(category);
     handleAddToCart({
       id: category.id,
       title: category.title,
       price: category.price,
+      image: category.images[0],
       quantity: 1,
     });
     openModal();
-  };
-
-  // Пагинация;
-
-  const loadNextPage = async () => {
-    const nextPage = localCurrentPage + 1;
-    dispatch(
-      getSubCategories({
-        subCategoryId: categoryId,
-        currentPage: nextPage,
-      }),
-    );
-    setLocalCurrentPage(nextPage);
-  };
-
-  const loadPrevPage = async () => {
-    const prevPage = localCurrentPage - 1;
-    dispatch(
-      getSubCategories({
-        subCategoryId: categoryId,
-        currentPage: prevPage,
-      }),
-    );
-    setLocalCurrentPage(prevPage);
   };
 
   return (
@@ -209,78 +135,14 @@ const SubcategoryPage = () => {
                 onClick={() => addAndOpen(category)}
                 className="w-30 h-8 rounded-md border border-blue-500 px-4 text-blue-500"
               >
-                В корзину
+                в корзину
               </button>
             </div>
           </div>
         ))}
       </div>
-      <div>
-        {isOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
-                &times;
-              </span>
-
-              {/* отображение продуктов в корзине */}
-
-              <div>
-                <h2>Shopping Cart</h2>
-                <ul>
-                  {cart.items.map((item) => (
-                    <li key={item.id}>
-                      <div>{item.title}</div>
-                      <div>{item.price}</div>
-                      <div>{item.subtotal}</div>
-                      <button onClick={() => handleAddToCart(item)}>+</button>
-                      <div>{item.quantity}</div>
-                      <button
-                        onClick={() =>
-                          handleRemoveFromCart(item.id, item.price)
-                        }
-                      >
-                        -
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <div>Total: {cart.total}</div>
-                <button onClick={handleClearCart}>Clear Cart</button>
-              </div>
-              {/* отображение продуктов в корзине */}
-
-              <div className="mx-auto flex flex-col">
-                <span>Имя</span>
-                <input type="text" className="w-[400px]" />
-                <span>Телефон</span>
-
-                <PhoneInput
-                  className=""
-                  defaultCountry="kg"
-                  value={phone}
-                  onChange={(phone) => setPhone(phone)}
-                />
-                <span>Адрес доставки</span>
-
-                <input
-                  className="w-[400px]"
-                  type="text"
-                  placeholder="г. Бишкек, ул. Горького 1г"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      <button onClick={loadNextPage} disabled={localCurrentPage >= totalPages}>
-        след страница ебать
-      </button>
-      <div>Текущая страница: {localCurrentPage}</div>
-      <div>Общее количество страниц: {totalPages}</div>
-      <button onClick={loadPrevPage} disabled={localCurrentPage <= 1}>
-        назад сука
-      </button>
+      <div></div>
+      <Modal isOpen={isOpen} closeModal={closeModal} />
     </div>
   );
 };
