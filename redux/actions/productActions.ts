@@ -10,7 +10,7 @@ export const getProducts = createAsyncThunk<ProductResult>(
   async () => {
     try {
       const { data } = await axios<{ results: ProductResult }>(
-        `${API}/products/`,
+        `${API}/products/list/`,
       );
       return data.results;
     } catch (error) {
@@ -25,7 +25,7 @@ export const getOneProduct = createAsyncThunk<product>(
   async (id: any) => {
     console.log(id);
     try {
-      const res = await axios<product>(`${API}/products/${id}`);
+      const res = await axios<product>(`${API}/products/detail/${id}`);
       console.log(res.data);
       return res.data;
     } catch (error) {
@@ -55,7 +55,7 @@ export const createOrder = createAsyncThunk(
   async (formData: any) => {
     console.log(formData);
     try {
-      const res = await axios.post(`${API}/orders/create/`, formData, config);
+      const res = await axios.post(`${API}/orders/create/`, formData, config as any);
       console.log(res);
     } catch (error) {
       console.log(error);

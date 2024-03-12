@@ -114,11 +114,11 @@ const SubcategoryPage = () => {
             <div>
               <Image
                 className="mx-auto justify-start"
-                src={`http://13.51.165.176${category.images[0].image}`}
+                src={category?.images[0]?.image ? category.images[0].image : ''}
                 width={250}
                 height={250}
-                alt="2skdjfs"
-              />
+                alt={category.title}
+            />
             </div>
             <h3 className=" mt-[30px] text-lg font-semibold">
               {category.title}

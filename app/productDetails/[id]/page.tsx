@@ -32,6 +32,12 @@ const page = () => {
     });
   };
 
+  const [selectedRadio, setSelectedRadio] = useState('inline-checked-radio');
+
+  const handleRadioChange = (event: any) => {
+    setSelectedRadio(event.target.id);
+  };
+
   useEffect(() => {
     dispatch(getOneProduct(id));
   }, []);
@@ -40,22 +46,47 @@ const page = () => {
     <>
       {oneProduct && (
         <div className="container relative mx-auto box-border px-20 py-8">
-          <div className="flex h-[700px] w-full">
-            <div className="h-full w-1/2 p-8">
+          <div className="flex h-[] w-full">
+            <div className="h-[700px] w-1/2 p-8">
               <div className="relative z-20 h-full w-full">
                 <Carousel oneProduct={oneProduct}></Carousel>
               </div>
             </div>
-            <div className="h-24 w-1/2">
+            <div className="w-1/2">
               <div className="h-full w-full px-24 py-12">
-                <h4 className="mt-12 text-3xl">{oneProduct.title}</h4>
-                <p className="font-regular mt-2">
+                <h4 className="mt-12 font-semibold text-2xl">{oneProduct.title}</h4>
+                <p className="font-light text-base mt-2">
                   Артикул: {oneProduct.article}
                 </p>
 
-                <p className="mt-8 text-2xl">{oneProduct.price} сом</p>
+                <p className="mt-8 font-medium text-2xl">{oneProduct.price} сом</p>
+
+                <p className="mt-3 font-light text-base">Размер</p>
+
+                
+                <div className="mt-3">
+                  <div className="flex items-center mt-2">
+                    <input
+                      id="inline-radio"
+                      type="radio"
+                      value=""
+                      name="inline-radio-group"
+                      className="w-5 h-5 cursor-pointer text-gray-600 bg-gray-100 border-gray-300 focus:ring-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      checked={selectedRadio === 'inline-radio'}
+                      onChange={handleRadioChange}
+                    />
+                    <label htmlFor="inline-radio" className="ms-2 text-md font-medium text-gray-900 dark:text-gray-300">
+                      Inline 1
+                    </label>
+                  </div>
+                </div>
+
+
                 <p className="mt-4 text-lg font-semibold">
                   {oneProduct.description}
+                </p>
+                <p className="mt-4 text-md font-semibold">
+                  {oneProduct.tech_characteristics}
                 </p>
 
                 <p className="mt-5 text-base">{oneProduct.dop_info}</p>

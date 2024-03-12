@@ -80,7 +80,7 @@ import ImageZoom from '@/app/productDetails/DetailModal';
       e.preventDefault();
       setOpen(false);
     };
-  
+
     return (
       <>
         <div className="w-full h-full p-20">
@@ -91,8 +91,8 @@ import ImageZoom from '@/app/productDetails/DetailModal';
                   {oneProduct.images.map((elem, index) => (
                     <img
                       key={index}
-                      src={`http://13.51.165.176${elem.image}`}
-                      className={`w-full h-full absolute top-0 left-0 opacity-0 ${
+                      src={elem.image}
+                      className={`w-full h-full object-cover absolute top-0 left-0 opacity-0 ${
                         index === curr ? "opacity-100 transition-opacity duration-500 ease-in-out" : ""
                       }`}
                       alt={elem.product}
@@ -111,7 +111,7 @@ import ImageZoom from '@/app/productDetails/DetailModal';
               index === curr ? "scale-105" : ""
             }`}
             onClick={() => handleImageClick(index)}
-            src={`http://13.51.165.176${elem.image}`}
+            src={elem.image}
             alt=""
           />
           ))}

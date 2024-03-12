@@ -25,7 +25,7 @@ export const getSubCategories = createAsyncThunk(
     const { subCategoryId, currentPage } = payload;
     try {
       const { data } = await axios.get(
-        `${API}/products/?category=${subCategoryId}&page=${currentPage}`,
+        `${API}/products/list/?category=${subCategoryId}&page=${currentPage}`,
       );
       //console.log(data.results, 'response');
       return data.results as ProductsResponse;
